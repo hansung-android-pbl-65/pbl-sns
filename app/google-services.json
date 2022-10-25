@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "786799029859",
+    "project_id": "hansung-android-pbl-65",
+    "storage_bucket": "hansung-android-pbl-65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786799029859:android:5ffd16f985b96474659256",
+        "android_client_info": {
+          "package_name": "com.androidpbl.pblsns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786799029859-qsqsdpluqama521m9g3gh5iuuar3vcn9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB344nL-zHmp66Uqq-1aEweFMy0y6aljYs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "786799029859-qsqsdpluqama521m9g3gh5iuuar3vcn9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
