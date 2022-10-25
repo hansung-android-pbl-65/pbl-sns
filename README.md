@@ -18,7 +18,7 @@ git --help
 ```java
 git add -A 
 git commit -am "Commit Message"
-git push origin branch // ex) git push origin master, git commiut origin develop
+git push origin branch // ex) git push origin master, git push origin develop
 ```
 
 </br>
