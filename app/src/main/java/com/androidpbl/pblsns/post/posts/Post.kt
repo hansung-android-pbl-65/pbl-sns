@@ -27,7 +27,7 @@ class Post constructor(_user: Int) {
     }
 
     fun getComment(index: Int) : Comment {
-        return comments[index] as Comment
+        return comments[index]
     }
 
 }

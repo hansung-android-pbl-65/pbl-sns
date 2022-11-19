@@ -22,7 +22,7 @@ open class Comment constructor(_user: Int) {
     }
 
     fun getReply(index: Int) : Reply {
-        return replies[index] as Reply
+        return replies[index]
     }
 
 }
