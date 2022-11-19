@@ -4,6 +4,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.google.common.collect.Sets
 import java.lang.reflect.Method
+import java.util.logging.Level
+import java.util.logging.Logger
 
 object EventManager {
 
@@ -11,9 +13,9 @@ object EventManager {
 
     fun registerListener(listener: Listener) {
         val methods : MutableSet<Method> = Sets.newHashSet();
-        listener::class.java.methods.forEach { method ->
+        listener::class.java.declaredMethods.forEach { method ->
             method.annotations.forEach {
-                if (it::class.java == EventHandler::class.java) {
+                if (it.annotationClass == EventHandler::class) {
                     methods.add(method);
                 }
             }
