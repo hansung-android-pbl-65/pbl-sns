@@ -29,6 +29,7 @@ object EventManager {
     fun callEvent(event: Event) {
         listeners.forEach { content ->
             content.getEventMethods(event).forEach { method ->
+                method.isAccessible = true
                 method.invoke(content.listener, event)
             }
         }
