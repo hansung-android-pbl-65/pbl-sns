@@ -35,7 +35,10 @@ class SearchFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextChange(newText: String?): Boolean {
-                filterList(newText)
+                if(newText!!.indexOf("#") == 0)
+                    filterTagList(newText)
+                else
+                    filterUserList(newText)
                 return true
             }
 
@@ -82,8 +85,8 @@ class SearchFragment : Fragment() {
         val binding = FragmentSearchBinding.bind(view)
     }// onViewCreated
 
-    fun filterList(text: String?){
-        var filteredList = mutableListOf<String>()
+    fun filterUserList(text: String?){
+        val filteredList = mutableListOf<String>()
         for(item in itemList){
             if(item.lowercase().contains(text!!.lowercase())){
                 // 입력받은 text를 item이 포함한다면
@@ -97,6 +100,22 @@ class SearchFragment : Fragment() {
             adapter.setFilteredList(filteredList)
         }
     }// filteList
+
+    fun filterTagList(text: String?){
+        val filteredTagList = mutableListOf<String>()
+        for(item in itemList){
+            if(item.indexOf("#") == 0){ // 첫번째 캐릭터가 #이면
+                if(item.lowercase().contains(text!!.lowercase()))
+                    filteredTagList.add(item)
+            }
+        }
+
+        if(filteredTagList.isEmpty()){
+            Toast.makeText(activity, "No Data Found", Toast.LENGTH_SHORT).show()
+        }else{
+            adapter.setFilteredList(filteredTagList)
+        }
+    }
 
     class MyViewHolder(val binding: ItemRecyclerviewBinding): RecyclerView.ViewHolder(binding.root)
 
