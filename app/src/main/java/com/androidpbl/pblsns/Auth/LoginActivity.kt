@@ -4,11 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.androidpbl.pblsns.MainActivity
+import com.androidpbl.pblsns.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.pblsns.capstoneday1zipkok.MainActivity
-import com.pblsns.capstoneday1zipkok.databinding.ActivityLoginBinding
+
 
 
 class LoginActivity : AppCompatActivity() {
@@ -23,10 +24,12 @@ class LoginActivity : AppCompatActivity() {
         // Initialize Firebase Auth
         auth = Firebase.auth
 
+
+        /*
         //로그인 하기
-        binding.btLogin.setOnClickListener {
-            val email = binding.etLoginEmail.text.toString()
-            val password = binding.etLoginPw.text.toString()
+        binding.btnLogin.setOnClickListener {
+            //val email = binding.etLoginEmail.text.toString()
+            //val password = binding.etLoginPw.text.toString()
 
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
@@ -43,12 +46,12 @@ class LoginActivity : AppCompatActivity() {
         }
 
         //회원가입으로 이동
-        binding.btEnrollment.setOnClickListener {
+        binding.btnEnrollment.setOnClickListener {
             val intent = Intent(this, EnrollmentActivity::class.java)
             startActivity(intent)
             finish()
         }
-
+        */
     }
 
 

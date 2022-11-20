@@ -6,13 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.androidpbl.pblsns.databinding.ActivityEnrollmentBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
+
 import com.google.firebase.ktx.Firebase
-import com.pblsns.capstoneday1zipkok.MainActivity
-import com.pblsns.capstoneday1zipkok.R
-import com.pblsns.capstoneday1zipkok.databinding.ActivityEnrollmentBinding
+
+
 
 //회원가입 정보 데이터 클래스
 data class UserInfo(
@@ -28,7 +28,7 @@ class EnrollmentActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityEnrollmentBinding.inflate(layoutInflater)
+        //binding = ActivityEnrollmentBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
@@ -36,7 +36,7 @@ class EnrollmentActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         ////////////////
-        val db = Firebase.firestore
+        //val db = Firebase.firestore
 
 
         //닉네임 중복 확인
