@@ -1,4 +1,4 @@
-package com.androidpbl.pblsns.post.event
+package com.androidpbl.pblsns.post.events
 
 import com.androidpbl.pblsns.event.Event
 import com.androidpbl.pblsns.post.posts.Post

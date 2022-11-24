@@ -3,7 +3,7 @@ package com.androidpbl.pblsns.post
 import com.androidpbl.pblsns.event.EventHandler
 import com.androidpbl.pblsns.event.EventManager
 import com.androidpbl.pblsns.event.Listener
-import com.androidpbl.pblsns.post.event.PostFindEvent
+import com.androidpbl.pblsns.post.events.PostFindEvent
 import com.androidpbl.pblsns.post.posts.Post
 import com.google.common.collect.Lists
 import org.junit.Test
