@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidpbl.pblsns.databinding.FragmentSearchBinding
@@ -98,7 +99,7 @@ class SearchFragment : Fragment() {
         }else{
             adapter.setFilteredList(filteredList)
         }
-    }// filteList
+    }// filterUserList
 
     fun filterTagList(text: String?){
         val filteredTagList = mutableListOf<String>()
@@ -113,7 +114,7 @@ class SearchFragment : Fragment() {
         }else{
             adapter.setFilteredList(filteredTagList)
         }
-    }
+    }// filterTagList
 
     class MyViewHolder(val binding: ItemRecyclerviewBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -142,9 +143,15 @@ class SearchFragment : Fragment() {
             binding.itemData.text = itemList[position]
 
             binding.itemRoot.setOnClickListener {
-                // 태그 검색결과 -> 해당 short Post 목록 프래그먼트로 이동
-                // 유저 검색결과 -> 해당 유저 프로필 프래그먼트로 이동
-                Log.d("test", "clicked view ${position+1}")
+                val selected = itemList[position]
+                if(selected.indexOf("#") == 0){
+                    // 태그 검색결과 -> 해당 short Post 목록 프래그먼트로 이동
+                    //it.findNavController().navigate()
+                }else{
+                    // 유저 검색결과 -> 해당 유저 프로필 프래그먼트로 이동
+                    //it.findNavController().navigate()
+                }
+                Log.d("test", "clicked [${itemList[position]}]")
             }
         }
     }// MyAdapter
