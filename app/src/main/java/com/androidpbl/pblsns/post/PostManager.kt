@@ -2,10 +2,9 @@ package com.androidpbl.pblsns.post
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.androidpbl.pblsns.post.event.PostFindEvent
+import com.androidpbl.pblsns.post.events.PostFindEvent
 import com.androidpbl.pblsns.post.posts.Post
 import com.google.common.collect.Lists
-import com.google.common.collect.Sets
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.logging.Level
