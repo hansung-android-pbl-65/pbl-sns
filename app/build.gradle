@@ -66,5 +66,5 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
-
+    implementation 'com.google.guava:guava:31.1-android'
 }
