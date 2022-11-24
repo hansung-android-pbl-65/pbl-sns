@@ -16,7 +16,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/exMainLogin" />
+                android:src="@drawable/login_image" />
 
     </FrameLayout>
 
@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham"
-                    android:text="Good "
+                    android:text="PBL "
                     android:textColor="#ffffff"
                     android:textSize="32sp" />
 
@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham"
-                    android:text="Morning"
+                    android:text="-SNS"
                     android:textColor="#ffffff"
                     android:textSize="32sp" />
 
@@ -77,9 +77,9 @@
             android:layout_marginTop="4dp"
             android:fontFamily="@font/calibri"
             android:gravity="center"
-            android:text="We pursue a relaxed gaming experience"
-            android:textColor="#9affffff"
-            android:textSize="10sp"
+            android:text="65 team"
+            android:textColor="#ff00ff"
+            android:textSize="15sp"
             tools:ignore="SmallSp" />
 
 
@@ -97,38 +97,42 @@
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="#96ffffff"
-                android:theme="@style/EditScreenTextInputLayoutStyle">
+                android:textColorHint="#96ffffff">
+            <!--android:theme="@style/EditScreenTextInputLayoutStyle"-->
 
             <EditText
+                    android:id="@+id/et_login_email"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:drawablePadding="16dp"
                     android:drawableEnd="@drawable/ic_email_white_24dp"
                     android:fontFamily="@font/calibri"
                     android:hint="Email"
+                    android:ems="10"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="#96ffffff"
-                android:theme="@style/EditScreenTextInputLayoutStyle">
+                android:textColorHint="#96ffffff">
+            <!-- android:theme="@style/EditScreenTextInputLayoutStyle" -->
 
             <EditText
+                    android:id="@+id/et_login_pw"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:drawablePadding="16dp"
                     android:drawableEnd="@drawable/ic_lock_white_24dp"
                     android:fontFamily="@font/calibri"
                     android:hint="Password"
+                    android:ems="10"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:textColor="@android:color/white"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -141,30 +145,30 @@
                 android:orientation="horizontal">
 
             <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:background="@drawable/buttonshapewhitebg"
-                    android:fontFamily="@font/calibri"
-                    android:text="Sign up"
-                    android:textAllCaps="false"
-                    android:textStyle="bold"
-                    android:textColor="#96ffffff"
-                    android:textSize="16sp"
-                    android:id="@+id/btnLogin" />
+                     android:id="@+id/btnLogin"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginEnd="16dp"
 
-            <Button
+                     android:fontFamily="@font/calibri"
+                     android:text="로그인"
+                     android:textAllCaps="false"
+                     android:textStyle="bold"
+                     android:textColor="@color/black"
+                     android:textSize="16sp" /><!--             android:background="@drawable/buttonshapewhitebg"  -->
+
+             <Button
+                    android:id="@+id/btnEnrollment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:background="@drawable/buttonshapewhitebg"
+
                     android:fontFamily="@font/calibri"
-                    android:text="Sign in"
+                    android:text="회원가입"
                     android:textAllCaps="false"
-                    android:textColor="#96ffffff"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:id="@+id/btnEnrollment" />
+                    android:textStyle="bold" /><!--            android:background="@drawable/buttonshapewhitebg" -->
 
 
         </LinearLayout>

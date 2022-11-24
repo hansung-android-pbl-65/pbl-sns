@@ -6,12 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.androidpbl.pblsns.MainActivity
+import com.androidpbl.pblsns.R
 import com.androidpbl.pblsns.databinding.ActivityEnrollmentBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-
 
 
 //회원가입 정보 데이터 클래스
@@ -28,7 +29,7 @@ class EnrollmentActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //binding = ActivityEnrollmentBinding.inflate(layoutInflater)
+        binding = ActivityEnrollmentBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
@@ -36,7 +37,7 @@ class EnrollmentActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         ////////////////
-        //val db = Firebase.firestore
+        val db = Firebase.firestore
 
 
         //닉네임 중복 확인
@@ -59,7 +60,7 @@ class EnrollmentActivity : AppCompatActivity() {
                     if (usuableNickname == true) {
                         binding.btNicknameCheck.text = "사용가능"
                         binding.btNicknameCheck.backgroundTintList = ColorStateList.valueOf(
-                            ContextCompat.getColor(this, R.color.my_green))
+                            ContextCompat.getColor(this, R.color.black))
                         binding.etEnrollemntNickname.isEnabled = false
 
                         //binding.btNicknameCheckCancel.isVisible = true
@@ -123,7 +124,7 @@ class EnrollmentActivity : AppCompatActivity() {
                 check = false
                 //닉네임 길이 5~14자
             } else if (nickname.length < 4 || nickname.length > 11) {
-                Toast.makeText(this, "닉네임을 5글자 이상 10글자 이하로ㅓ 입력하세요", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "닉네임을 5글자 이상 10글자 이하 입력하세요", Toast.LENGTH_SHORT).show()
                 check = false
             } else if (nicknameCheck != "사용가능") {
                 Toast.makeText(this, "닉네임 중복확인 하세요", Toast.LENGTH_SHORT).show()
@@ -138,7 +139,8 @@ class EnrollmentActivity : AppCompatActivity() {
                             val uid = auth.currentUser!!.uid
 
 
-                            val userInfoList = UserInfo(email, pw1, nickname, uid)
+                            val userInfoList =
+                                com.example.pblsns.Auth.UserInfo(email, pw1, nickname, uid)
                             db.collection("UserInfo").document(uid).set(userInfoList)
 
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.androidpbl.pblsns.MainActivity
 import com.androidpbl.pblsns.databinding.ActivityLoginBinding
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -25,11 +26,11 @@ class LoginActivity : AppCompatActivity() {
         auth = Firebase.auth
 
 
-        /*
+
         //로그인 하기
         binding.btnLogin.setOnClickListener {
-            //val email = binding.etLoginEmail.text.toString()
-            //val password = binding.etLoginPw.text.toString()
+            val email = binding.etLoginEmail.text.toString()
+            val password = binding.etLoginPw.text.toString()
 
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
@@ -51,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-        */
+
     }
 
 
