@@ -21,7 +21,7 @@ import com.google.firebase.ktx.Firebase
 class SearchFragment : Fragment() {
     // 파이어베이스 구조 정해지면 수정
     private val db: FirebaseFirestore = Firebase.firestore
-    private val rootCollectionReference = db.collection("/root")
+    private val rootCollectionReference = db.collection("/root")    // path 추후 수정
     private var itemList = mutableListOf<String>()
     private lateinit var adapter: MyAdapter
 
@@ -72,7 +72,7 @@ class SearchFragment : Fragment() {
 
             if (hasFocus) {
                 val isShowed = imm.showSoftInput(view.findFocus(), InputMethodManager.SHOW_IMPLICIT)
-                Log.d("focus"," ## hasFocus -> $hasFocus , isShowing -> $isShowed")        // both are true!
+                Log.d("focus"," ## hasFocus -> $hasFocus , isShowing -> $isShowed")
             }
         }
         searchView.setOnQueryTextFocusChangeListener(popUpSoftKeyboard)
@@ -88,12 +88,11 @@ class SearchFragment : Fragment() {
     fun filterUserList(text: String?){
         val filteredList = mutableListOf<String>()
         for(item in itemList){
-            if(item.lowercase().contains(text!!.lowercase())){
-                // 입력받은 text를 item이 포함한다면
-                filteredList.add(item)
+            if(item.indexOf("#") != 0){
+                if(item.lowercase().contains(text!!.lowercase()))
+                    filteredList.add(item)
             }
         }
-
         if(filteredList.isEmpty()){
             Toast.makeText(activity, "No Data Found", Toast.LENGTH_SHORT).show()
         }else{
@@ -109,7 +108,6 @@ class SearchFragment : Fragment() {
                     filteredTagList.add(item)
             }
         }
-
         if(filteredTagList.isEmpty()){
             Toast.makeText(activity, "No Data Found", Toast.LENGTH_SHORT).show()
         }else{
