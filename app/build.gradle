@@ -67,4 +67,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     implementation 'com.google.guava:guava:31.1-android'
+
+    // markdown
+    implementation "io.noties.markwon:core:4.6.2"
 }
