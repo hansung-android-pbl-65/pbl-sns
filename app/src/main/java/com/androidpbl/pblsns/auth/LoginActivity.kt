@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.androidpbl.pblsns.ContentActivity
 import com.androidpbl.pblsns.MainActivity
 import com.androidpbl.pblsns.databinding.ActivityLoginBinding
 
@@ -35,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         val user = auth.currentUser
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, ContentActivity::class.java)
                         startActivity(intent)
                         finish()
 
@@ -53,9 +54,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
-
-
-
 
     ///뒤로가기 두 번 눌러서 종료 2초 텀
     var mBackWait:Long = 0
