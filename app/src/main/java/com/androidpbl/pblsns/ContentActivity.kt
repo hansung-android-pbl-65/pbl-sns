@@ -21,8 +21,8 @@ class ContentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 툴바 타이틀 설정
-        supportActionBar?.title = HomeFragment.NAME;
+        // 초기 프래그먼트 설정
+        changeFragment(HomeFragment(), HomeFragment.NAME);
 
         // 하단 네비게이션 클릭 시 화면 구성 프래그먼트 전환
         bottomNavView.setOnItemSelectedListener {
