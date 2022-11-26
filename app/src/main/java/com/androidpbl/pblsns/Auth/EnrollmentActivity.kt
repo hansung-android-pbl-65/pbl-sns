@@ -1,4 +1,4 @@
-package com.example.pblsns.Auth
+package com.androidpbl.pblsns.auth
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -6,22 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.androidpbl.pblsns.MainActivity
+import com.androidpbl.pblsns.ContentActivity
 import com.androidpbl.pblsns.R
 import com.androidpbl.pblsns.databinding.ActivityEnrollmentBinding
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-
-//회원가입 정보 데이터 클래스
-data class UserInfo(
-    var email: String? = null,
-    var pw1: String? = null,
-    var nickname: String? = null,
-    var uid: String? = null,
-)
 
 class EnrollmentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEnrollmentBinding
@@ -42,7 +35,7 @@ class EnrollmentActivity : AppCompatActivity() {
 
         //닉네임 중복 확인
         binding.btNicknameCheck.setOnClickListener {
-            var usuableNickname: Boolean = true
+            var usuableNickname = true
             val nickname = binding.etEnrollemntNickname.text.toString()
 
             if (nickname.length < 4 || nickname.length > 11) {
@@ -90,7 +83,7 @@ class EnrollmentActivity : AppCompatActivity() {
             val pw1 = binding.etEnrollmentPw1.text.toString()
             val pw2 = binding.etEnrollemntPw2.text.toString()
             val nickname = binding.etEnrollemntNickname.text.toString()
-            var check: Boolean = true //아래 제약사항에 걸리지 않으면 true -> 회원가입 시킴
+            var check = true //아래 제약사항에 걸리지 않으면 true -> 회원가입 시킴
             val nicknameCheck = binding.btNicknameCheck.text.toString()
 
 
@@ -139,13 +132,12 @@ class EnrollmentActivity : AppCompatActivity() {
                             val uid = auth.currentUser!!.uid
 
 
-                            val userInfoList =
-                                com.example.pblsns.Auth.UserInfo(email, pw1, nickname, uid)
+                            val userInfoList = UserInfo(email, pw1, nickname, uid)
                             db.collection("UserInfo").document(uid).set(userInfoList)
 
 
                             Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, MainActivity::class.java)
+                            val intent = Intent(this, ContentActivity::class.java)
                             startActivity(intent)
                             finish()
 
@@ -165,4 +157,13 @@ class EnrollmentActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    data class UserInfo(
+        var email: String? = null,
+        var pw1: String? = null,
+        var nickname: String? = null,
+        var uid: String? = null,
+    )
+
+
 }

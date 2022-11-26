@@ -6,7 +6,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/body_container"
                 android:background="@color/white"
-                tools:context=".MainActivity">
+                tools:context=".activities.ContentActivity">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -16,6 +16,13 @@
             android:theme="?attr/actionBarTheme"
             android:minHeight="?attr/actionBarSize"
             android:id="@+id/toolbar"/>
+
+    <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:layout_above="@id/bottom_navigation" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
