@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.androidpbl.pblsns.MainActivity
+import com.androidpbl.pblsns.ContentActivity
 import com.androidpbl.pblsns.R
 import com.androidpbl.pblsns.databinding.ActivityEnrollmentBinding
 
@@ -35,7 +35,7 @@ class EnrollmentActivity : AppCompatActivity() {
 
         //닉네임 중복 확인
         binding.btNicknameCheck.setOnClickListener {
-            var usuableNickname: Boolean = true
+            var usuableNickname = true
             val nickname = binding.etEnrollemntNickname.text.toString()
 
             if (nickname.length < 4 || nickname.length > 11) {
@@ -83,7 +83,7 @@ class EnrollmentActivity : AppCompatActivity() {
             val pw1 = binding.etEnrollmentPw1.text.toString()
             val pw2 = binding.etEnrollemntPw2.text.toString()
             val nickname = binding.etEnrollemntNickname.text.toString()
-            var check: Boolean = true //아래 제약사항에 걸리지 않으면 true -> 회원가입 시킴
+            var check = true //아래 제약사항에 걸리지 않으면 true -> 회원가입 시킴
             val nicknameCheck = binding.btNicknameCheck.text.toString()
 
 
@@ -137,7 +137,7 @@ class EnrollmentActivity : AppCompatActivity() {
 
 
                             Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, MainActivity::class.java)
+                            val intent = Intent(this, ContentActivity::class.java)
                             startActivity(intent)
                             finish()
 
