@@ -31,6 +31,8 @@ import kotlin.coroutines.coroutineContext
 
 class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment() {
 
+    private val viewPosts = mutableListOf<Post>()
+
     constructor() : this(mutableListOf())
 
     override fun onCreateView(
@@ -44,22 +46,34 @@ class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment(
         view.setHasFixedSize(true);
         view.layoutManager = LinearLayoutManager(activity)
 
-        //TODO: 최신 게시물들을 가져오도록 할 것
-        PostManager.collection.get().addOnSuccessListener {
-            posts.addAll(it.toObjects(Post::class.java))
-            view.adapter = SimplePostAdapter(posts);
-        }.addOnFailureListener {
+        // parameter 로 넘겨받은 사이즈가 1보다 작으면 포스트 조회
+        if (posts.size < 1) {
+            PostManager.collection.get().addOnSuccessListener {
+                posts.addAll(it.toObjects(Post::class.java))
 
-            // 테스트 포스트 추가
-            posts.add(Post("test_user_1", "포스트 테스트"))
-            posts.add(Post("test_user_2", "포스트 테스트"))
-            posts.add(Post("test_user_3", "포스트 테스트"))
-            posts.add(Post("test_user_4", "포스트 테스트"))
-            posts.add(Post("test_user_4", "포스트 테스트 1 \n포스트 테스트 2"))
-            posts.add(Post("test_user_4", "포스트 테스트 1 \n포스트 테스트 2 \n포스트 테스트 3"))
+                if (posts.isNotEmpty()) {
+                    // 상위 10개의 포스트만 추가
+                    val maxIndex = 10.coerceAtMost(posts.size)
+                    for (i in 0..maxIndex) {
+                        viewPosts.add(posts[i])
+                    }
+                }
 
-            view.adapter = SimplePostAdapter(posts);
-            Toast.makeText(activity, "Firestore 연결 오류", Toast.LENGTH_SHORT).show()
+                view.adapter = SimplePostAdapter(viewPosts);
+            }.addOnFailureListener {
+
+                val tag = "포스트 테스트"
+                var msg = ""
+
+                // 테스트 포스트 추가
+                repeat(30) {
+                    msg = "$msg\n$tag $it"
+                    viewPosts.add(Post("test_user_$it", msg))
+                }
+
+                view.adapter = SimplePostAdapter(viewPosts);
+                Toast.makeText(activity, "Firestore 연결 오류", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.postShort.addOnScrollListener(object: OnScrollListener() {
@@ -68,22 +82,13 @@ class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment(
                 if (scrollPercent(binding.postShort) >= 100) {
                     Toast.makeText(activity, "새로운 게시물을 불러오는 중입니다", Toast.LENGTH_SHORT).show()
 
-                    val startIndex = posts.size
-
-                    //TODO: 최신 게시물들을 가져오도록 할 것
-                    PostManager.collection.get().addOnSuccessListener {
-                        posts.addAll(it.toObjects(Post::class.java))
-                        view.adapter?.notifyItemRangeInserted(startIndex, posts.size - startIndex)
-                    }.addOnFailureListener {
-
-                        // 테스트 포스트 추가
-                        posts.add(Post("addition_user", "포스트 테스트"))
-                        posts.add(Post("addition_user", "포스트 테스트 1 \n포스트 테스트 2"))
-                        posts.add(Post("addition_user", "포스트 테스트 1 \n포스트 테스트 2 \n포스트 테스트 3"))
-
-                        view.adapter?.notifyItemRangeInserted(startIndex, 3)
-                        Toast.makeText(activity, "Firestore 연결 오류", Toast.LENGTH_SHORT).show()
+                    val startIndex = viewPosts.size
+                    val endIndex = (startIndex + 10).coerceAtMost(posts.size - 1)
+                    for (i in startIndex..endIndex) {
+                        viewPosts.add(posts[i])
                     }
+
+                    view.adapter?.notifyItemRangeInserted(startIndex, endIndex - startIndex)
                 }
             }
         })
@@ -103,7 +108,7 @@ class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment(
 
     class SimplePostViewHolder(val binding: PostShortLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
-    class SimplePostAdapter constructor(var posts: MutableList<Post>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    class SimplePostAdapter constructor(private var posts: MutableList<Post>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val binding = PostShortLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
