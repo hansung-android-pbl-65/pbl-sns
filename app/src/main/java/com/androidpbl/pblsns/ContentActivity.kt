@@ -1,18 +1,17 @@
-package com.androidpbl.pblsns.Auth
+package com.androidpbl.pblsns
 
 import android.os.Bundle
-import android.widget.RelativeLayout
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.androidpbl.pblsns.R
 import com.androidpbl.pblsns.fragments.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ContentActivity : AppCompatActivity() {
 
-    private val frame: RelativeLayout by lazy {
-        findViewById(R.id.body_container)
+    private val frame: FrameLayout by lazy {
+        findViewById(R.id.fragment_container)
     }
 
     private val bottomNavView: BottomNavigationView by lazy {
