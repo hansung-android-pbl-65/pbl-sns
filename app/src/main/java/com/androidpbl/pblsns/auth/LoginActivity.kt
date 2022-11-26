@@ -1,4 +1,5 @@
-package com.example.pblsns.Auth
+package com.androidpbl.pblsns.auth
+
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +11,6 @@ import com.androidpbl.pblsns.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-
-
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding
