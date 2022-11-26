@@ -44,9 +44,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:layout_below="@id/user_thumb"
-            android:textColor="@color/black"
-            android:layout_marginTop="16dp">
+            android:textColor="@color/black" >
 
         <TextView
                 android:id="@+id/post_short_content"

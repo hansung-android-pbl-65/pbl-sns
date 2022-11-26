@@ -1,12 +1,10 @@
-package com.androidpbl.pblsns.auth
+package com.androidpbl.pblsns.activities
 
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.androidpbl.pblsns.ContentActivity
-import com.androidpbl.pblsns.MainActivity
 import com.androidpbl.pblsns.databinding.ActivityLoginBinding
 
 import com.google.firebase.auth.FirebaseAuth

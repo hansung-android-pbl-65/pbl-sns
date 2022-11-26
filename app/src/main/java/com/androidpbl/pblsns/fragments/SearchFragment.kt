@@ -1,4 +1,4 @@
-package com.androidpbl.pblsns
+package com.androidpbl.pblsns.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.androidpbl.pblsns.databinding.FragmentSearchBinding
@@ -155,4 +154,9 @@ class SearchFragment : Fragment() {
             }
         }
     }// MyAdapter
+    
+    companion object {
+        const val NAME = "검색"
+    }
+    
 }

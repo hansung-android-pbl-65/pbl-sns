@@ -6,7 +6,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/body_container"
                 android:background="@color/white"
-                tools:context=".ContentActivity">
+                tools:context=".activities.ContentActivity">
 
 
     <androidx.appcompat.widget.Toolbar
