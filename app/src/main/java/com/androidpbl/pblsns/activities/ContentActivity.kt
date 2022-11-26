@@ -1,17 +1,18 @@
-package com.androidpbl.pblsns
+package com.androidpbl.pblsns.activities
 
 import android.os.Bundle
-import android.widget.RelativeLayout
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.androidpbl.pblsns.fragments.HomeFragment
+import com.androidpbl.pblsns.R
+import com.androidpbl.pblsns.fragments.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ContentActivity : AppCompatActivity() {
 
-    private val frame: RelativeLayout by lazy {
-        findViewById(R.id.body_container)
+    private val frame: FrameLayout by lazy {
+        findViewById(R.id.fragment_container)
     }
 
     private val bottomNavView: BottomNavigationView by lazy {
@@ -20,9 +21,11 @@ class ContentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_content)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
-        // 툴바 타이틀 설정
-        supportActionBar?.title = HomeFragment.NAME;
+        // 초기 프래그먼트 설정
+        changeFragment(HomeFragment(), HomeFragment.NAME);
 
         // 하단 네비게이션 클릭 시 화면 구성 프래그먼트 전환
         bottomNavView.setOnItemSelectedListener {
@@ -32,19 +35,19 @@ class ContentActivity : AppCompatActivity() {
                     true;
                 }
                 R.id.nav_search -> {
-                    //TODO: 검색 프래그먼트로 전환
+                    changeFragment(SearchFragment(), SearchFragment.NAME)
                     true
                 }
                 R.id.nav_post -> {
-                    //TODO: 포스팅 프래그먼트로 전환
+                    changeFragment(PostingFragment(), PostingFragment.NAME)
                     true
                 }
                 R.id.nav_profile -> {
-                    //TODO: 프로필 프래그먼트로 전환
+                    changeFragment(ProfileFragment(), ProfileFragment.NAME)
                     true
                 }
                 R.id.nav_note -> {
-                    //TODO: 알림 프래그먼트로 전환
+                    changeFragment(NotificationFragment(), NotificationFragment.NAME)
                     true
                 }
                 else -> {

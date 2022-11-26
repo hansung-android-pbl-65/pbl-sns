@@ -16,6 +16,8 @@ object PostManager {
     private val db by lazy { Firebase.firestore }
     private val collection by lazy { db.collection("posts") }
 
+    var postCache : MutableList<Post> = Lists.newArrayList()
+
     fun upload(post: Post) {
         collection.add(post)
             .addOnSuccessListener {
@@ -59,6 +61,24 @@ object PostManager {
             for (doc in it) {
                 val post = doc.toObject(Post::class.java)
                 posts.add(post)
+            }
+
+            // call event
+            PostFindEvent(posts).callEvent()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun findLatestPost(amount: Int) {
+        collection.get().addOnSuccessListener {
+            val posts: MutableList<Post> = Lists.newArrayListWithCapacity(amount);
+
+            for ((index, doc) in it.reversed().withIndex()) {
+                val post = doc.toObject(Post::class.java);
+                posts.add(post);
+                if (index >= amount) {
+                    break;
+                }
             }
 
             // call event

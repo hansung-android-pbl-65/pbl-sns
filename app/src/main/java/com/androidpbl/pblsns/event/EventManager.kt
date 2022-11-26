@@ -6,6 +6,7 @@ import com.google.common.collect.Sets
 import java.lang.reflect.Method
 import java.util.logging.Level
 import java.util.logging.Logger
+import kotlin.reflect.KClass
 
 object EventManager {
 
@@ -23,6 +24,13 @@ object EventManager {
 
         val content = ListenerContent(listener, methods);
         listeners.add(content);
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun removeListener(clazz: KClass<out Listener>) {
+        listeners.removeIf {
+            it.listener::class == clazz
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
