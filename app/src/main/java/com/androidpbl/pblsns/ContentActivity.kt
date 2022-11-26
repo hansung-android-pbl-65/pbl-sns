@@ -20,6 +20,7 @@ class ContentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_content)
 
         // 초기 프래그먼트 설정
         changeFragment(HomeFragment(), HomeFragment.NAME);
