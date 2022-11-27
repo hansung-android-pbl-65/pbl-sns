@@ -27,7 +27,6 @@ class ContentActivity : AppCompatActivity() {
     private val viewModel: MyViewModel by viewModels()
     private val db = Firebase.firestore
     private val myUid = FirebaseAuth.getInstance().uid
-    // 추후 수정
     private val myPostsCollectionReference = db.collection("posts")
     private val channelID = "Post Modified"
     private var notifyID = 0
