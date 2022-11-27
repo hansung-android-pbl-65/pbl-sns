@@ -45,7 +45,7 @@ public class FollowerFragment extends Fragment {
 
         database=FirebaseFirestore.getInstance(); //파이어스토어 DB 연결
         //databaseReference=database.collection("kyw").get(); //컬렉션에서 문서가져옴
-        database.collection("kyw").get().addOnSuccessListener(runnable -> {
+        database.collection("follower").get().addOnSuccessListener(runnable -> {
         for (QueryDocumentSnapshot queryDocumentSnapshot : runnable) {
         FollowerInfo user = queryDocumentSnapshot.toObject(FollowerInfo.class);
         arrayList.add(user);
