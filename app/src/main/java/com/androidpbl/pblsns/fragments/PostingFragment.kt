@@ -5,59 +5,54 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.androidpbl.pblsns.R
+import com.androidpbl.pblsns.activities.EnrollmentActivity
+import com.androidpbl.pblsns.databinding.FragmentPostingBinding
+import com.androidpbl.pblsns.post.PostManager
+import com.androidpbl.pblsns.post.posts.Post
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [PostingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PostingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_posting, container, false)
+        val binding = FragmentPostingBinding.inflate(layoutInflater, container, false)
+
+        binding.uploadButton.setOnClickListener {
+            val content = binding.posting.text.toString()
+            if (content.isNotEmpty()) {
+                val uid = Firebase.auth.uid
+                val post = Post(uid, content)
+
+                if (uid != null) {
+                    PostManager.collection.add(post)
+                    binding.posting.text = null
+                    Toast.makeText(context, "업로드 완료", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "유저 정보를 찾을 수 없습니다", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(context, "업로드할 게시글을 입력해 주세요", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.resetButton.setOnClickListener {
+            binding.posting.text = null
+            Toast.makeText(context, "초기화 완료", Toast.LENGTH_SHORT).show()
+        }
+
+        return binding.root
     }
 
     companion object {
 
         const val NAME = "게시글 작성"
 
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PostingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PostingFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }
