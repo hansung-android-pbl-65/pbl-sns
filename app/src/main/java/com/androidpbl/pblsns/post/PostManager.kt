@@ -14,7 +14,7 @@ object PostManager {
 
     private val logger by lazy { Logger.getLogger("Post") }
     private val db by lazy { Firebase.firestore }
-    private val collection by lazy { db.collection("posts") }
+    val collection by lazy { db.collection("posts") }
 
     var postCache : MutableList<Post> = Lists.newArrayList()
 
