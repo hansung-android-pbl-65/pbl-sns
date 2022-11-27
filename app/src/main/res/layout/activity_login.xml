@@ -39,8 +39,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham"
                     android:text="PBL "
-                    android:textColor="#ffffff"
-                    android:textSize="32sp" />
+                    android:textColor="@color/login_color"
+                    android:textSize="60sp" />
 
         </LinearLayout>
 
@@ -55,8 +55,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham"
                     android:text="-SNS"
-                    android:textColor="#ffffff"
-                    android:textSize="32sp" />
+                    android:textColor="@color/login_color"
+                    android:textSize="60sp" />
 
             <View
                     android:layout_width="match_parent"
@@ -78,8 +78,8 @@
             android:fontFamily="@font/calibri"
             android:gravity="center"
             android:text="65 team"
-            android:textColor="#ff00ff"
-            android:textSize="15sp"
+            android:textColor="@color/login_color"
+            android:textSize="50sp"
             tools:ignore="SmallSp" />
 
 
