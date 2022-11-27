@@ -10,19 +10,24 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.androidpbl.pblsns.R
 import com.androidpbl.pblsns.databinding.FragmentSearchBinding
 import com.androidpbl.pblsns.databinding.ItemRecyclerviewBinding
+import com.androidpbl.pblsns.post.posts.Post
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class SearchFragment : Fragment() {
-    // 파이어베이스 구조 정해지면 수정
     private val db: FirebaseFirestore = Firebase.firestore
-    private val rootCollectionReference = db.collection("/root")    // path 추후 수정
-    private var itemList = mutableListOf<String>()
+    private val userInfoCollectionReference = db.collection("UserInfo")
+    private val postsCollectionReference = db.collection("posts")
+    private var userMap = hashMapOf<String, String>()
+    private var postList = mutableListOf<Post>()
     private lateinit var adapter: MyAdapter
 
     override fun onCreateView(
@@ -35,10 +40,7 @@ class SearchFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextChange(newText: String?): Boolean {
-                if(newText!!.indexOf("#") == 0)
-                    filterTagList(newText)
-                else
-                    filterUserList(newText)
+                filterUserList(newText)
                 return true
             }
 
@@ -54,14 +56,27 @@ class SearchFragment : Fragment() {
         binding.recyclerView.layoutManager = layoutManager
 
         // collection 에서 documents 불러오기
-        rootCollectionReference.get().addOnSuccessListener {
-            // 각 document id를 add
-            for(doc in it){
-                itemList.add(doc.id)
+        userInfoCollectionReference.get().addOnSuccessListener { userDocs ->
+            // 각 유저닉네임, uid 획득
+            for(doc in userDocs){
+                userMap[doc["nickname"].toString()] = doc["uid"].toString()
             }
-            // document id를 담은 itemList를 Adapter에 전달
-            adapter = MyAdapter(itemList)
-            binding.recyclerView.adapter = adapter
+            // 유저 게시글 불러오기
+            postsCollectionReference.get().addOnSuccessListener { postDocs ->
+                // 모든 게시글을 postList에 저장
+                for(doc in postDocs) {
+                    val post = Post(doc["user"].toString(), doc["post"].toString())
+                    Log.d("post", "user: ${doc["user"].toString()} post: ${doc["post"].toString()}")
+                    postList.add(post)
+                }
+
+                // userMap과 postList를 Adapter에 전달
+                adapter = MyAdapter(userMap, postList, parentFragmentManager)
+                binding.recyclerView.adapter = adapter
+
+            }.addOnFailureListener {
+                Toast.makeText(activity, "Get From FireStore Is Failed", Toast.LENGTH_SHORT).show()
+            }
         }.addOnFailureListener {
             Toast.makeText(activity, "Get From FireStore Is Failed", Toast.LENGTH_SHORT).show()
         }
@@ -80,18 +95,11 @@ class SearchFragment : Fragment() {
         return binding.root
     }// onCreateView
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentSearchBinding.bind(view)
-    }// onViewCreated
-
     fun filterUserList(text: String?){
         val filteredList = mutableListOf<String>()
-        for(item in itemList){
-            if(item.indexOf("#") != 0){
-                if(item.lowercase().contains(text!!.lowercase()))
-                    filteredList.add(item)
-            }
+        for((nickname, uid) in userMap){
+            if(nickname.lowercase().contains(text!!.lowercase()))
+                filteredList.add(nickname)
         }
         if(filteredList.isEmpty()){
             Toast.makeText(activity, "No Data Found", Toast.LENGTH_SHORT).show()
@@ -100,33 +108,26 @@ class SearchFragment : Fragment() {
         }
     }// filterUserList
 
-    fun filterTagList(text: String?){
-        val filteredTagList = mutableListOf<String>()
-        for(item in itemList){
-            if(item.indexOf("#") == 0){ // 첫번째 캐릭터가 #이면
-                if(item.lowercase().contains(text!!.lowercase()))
-                    filteredTagList.add(item)
-            }
-        }
-        if(filteredTagList.isEmpty()){
-            Toast.makeText(activity, "No Data Found", Toast.LENGTH_SHORT).show()
-        }else{
-            adapter.setFilteredList(filteredTagList)
-        }
-    }// filterTagList
-
     class MyViewHolder(val binding: ItemRecyclerviewBinding): RecyclerView.ViewHolder(binding.root)
 
-    class MyAdapter(var itemList: MutableList<String>): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    class MyAdapter(var userMap: HashMap<String, String>, var postList: MutableList<Post>, val fragmentManager: FragmentManager): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+        private var userList: MutableList<String>
+
+        init {
+            userList = mutableListOf()
+            for((nickname, uid) in userMap){
+                userList.add(nickname)
+            }
+        }
 
         fun setFilteredList(filteredList: MutableList<String>){
-            this.itemList = filteredList
+            this.userList = filteredList
             notifyDataSetChanged()
         }
 
         override fun getItemCount(): Int {
             // 항목의 갯수 반환
-            return itemList.size
+            return userList.size
         }
 
         // single expression으로 viewHolder 객체를 반환
@@ -139,18 +140,23 @@ class SearchFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val binding = (holder as MyViewHolder).binding
             // 뷰 텍스트에 데이터 대입
-            binding.itemData.text = itemList[position]
+            binding.itemData.text = userList[position]
 
             binding.itemRoot.setOnClickListener {
-                val selected = itemList[position]
-                if(selected.indexOf("#") == 0){
-                    // 태그 검색결과 -> 해당 short Post 목록 프래그먼트로 이동
-                    //it.findNavController().navigate()
-                }else{
-                    // 유저 검색결과 -> 해당 유저 프로필 프래그먼트로 이동
-                    //it.findNavController().navigate()
+                val selectedUser: String = userList[position]
+                var selectedPosts: MutableList<Post> = mutableListOf()
+                for(post in postList){  // post.user == uid
+                    if(userMap[selectedUser] == post.user){
+                        Log.d("uidCheck", "checked: ${userMap[selectedUser]} == ${post.user}")
+                        selectedPosts.add(post)
+                    }
                 }
-                Log.d("test", "clicked [${itemList[position]}]")
+                // 선택된 유저의 uid가 같은 post만 모아서 HomeFragment에 전달
+                fragmentManager.commit{
+                    setReorderingAllowed(true)
+                    replace(R.id.fragment_container, HomeFragment(selectedPosts))
+                }
+                Log.d("click", "nickname: ${selectedUser} uid: ${userMap[selectedUser]}")
             }
         }
     }// MyAdapter
@@ -158,5 +164,4 @@ class SearchFragment : Fragment() {
     companion object {
         const val NAME = "검색"
     }
-    
 }
