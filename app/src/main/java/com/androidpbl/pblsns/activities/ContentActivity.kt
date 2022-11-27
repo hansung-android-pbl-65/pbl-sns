@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.androidpbl.pblsns.R
 import com.androidpbl.pblsns.fragments.*
+import com.androidpbl.pblsns.fragments.HomeFragment.Companion.NAME
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class ContentActivity : AppCompatActivity() {
@@ -43,7 +44,7 @@ class ContentActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_profile -> {
-                    changeFragment(ProfileFragment(), ProfileFragment.NAME)
+                    changeFragment(FollowerFragment(), "팔로워")
                     true
                 }
                 R.id.nav_note -> {
