@@ -61,12 +61,14 @@ class SearchFragment : Fragment() {
             for(doc in userDocs){
                 userMap[doc["nickname"].toString()] = doc["uid"].toString()
             }
+
             // 유저 게시글 불러오기
             postsCollectionReference.get().addOnSuccessListener { postDocs ->
                 // 모든 게시글을 postList에 저장
                 for(doc in postDocs) {
-                    val post = Post(doc["user"].toString(), doc["post"].toString())
-                    Log.d("post", "user: ${doc["user"].toString()} post: ${doc["post"].toString()}")
+                    //val post = Post(doc["user"].toString(), doc["post"].toString())
+                    val post = doc.toObject(Post::class.java)
+                    //Log.d("post", "user: ${doc["user"].toString()} post: ${doc["post"].toString()}")
                     postList.add(post)
                 }
 
@@ -144,19 +146,27 @@ class SearchFragment : Fragment() {
 
             binding.itemRoot.setOnClickListener {
                 val selectedUser: String = userList[position]
-                var selectedPosts: MutableList<Post> = mutableListOf()
+                val selectedPosts: MutableList<Post> = mutableListOf()
                 for(post in postList){  // post.user == uid
                     if(userMap[selectedUser] == post.user){
                         Log.d("uidCheck", "checked: ${userMap[selectedUser]} == ${post.user}")
                         selectedPosts.add(post)
                     }
                 }
-                // 선택된 유저의 uid가 같은 post만 모아서 HomeFragment에 전달
-                fragmentManager.commit{
-                    setReorderingAllowed(true)
-                    replace(R.id.fragment_container, HomeFragment(selectedPosts))
+
+
+                if (selectedPosts.isNotEmpty()) { // 선택된 유저의 uid가 같은 post만 모아서 HomeFragment에 전달
+//                    fragmentManager.commit{
+//                        setReorderingAllowed(true)
+//                        replace(R.id.fragment_container, HomeFragment(selectedPosts))
+//                    }
+
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment(selectedPosts)).commit()
+                    Log.d("click", "nickname: ${selectedUser} uid: ${userMap[selectedUser]}")
+
+                } else { // 유저의 게시글이 존재하지 않는다면 toast 전송
+                    Toast.makeText(binding.root.context, "유저 게시글을 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
-                Log.d("click", "nickname: ${selectedUser} uid: ${userMap[selectedUser]}")
             }
         }
     }// MyAdapter

@@ -47,18 +47,19 @@ class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment(
         view.layoutManager = LinearLayoutManager(activity)
 
         // parameter 로 넘겨받은 사이즈가 1보다 작으면 포스트 조회
-        if (posts.size < 1) {
+        if (posts.isEmpty()) {
             PostManager.collection.get().addOnSuccessListener {
                 posts.addAll(it.toObjects(Post::class.java))
 
                 if (posts.isNotEmpty()) {
                     // 상위 10개의 포스트만 추가
-                    val maxIndex = 10.coerceAtMost(posts.size)
+                    val maxIndex = 10.coerceAtMost(posts.size - 1)
                     for (i in 0..maxIndex) {
                         viewPosts.add(posts[i])
                     }
                 }
 
+                // adapter attach
                 view.adapter = SimplePostAdapter(viewPosts);
             }.addOnFailureListener {
 
@@ -71,16 +72,26 @@ class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment(
                     viewPosts.add(Post("test_user_$it", msg))
                 }
 
+                // adapter attach
                 view.adapter = SimplePostAdapter(viewPosts);
                 Toast.makeText(activity, "Firestore 연결 오류", Toast.LENGTH_SHORT).show()
             }
+        } else {
+
+            // 상위 10개 포스트 추가
+            val maxIndex = 10.coerceAtMost(posts.size - 1)
+            for (i in 0..maxIndex) {
+                viewPosts.add(posts[i])
+            }
+
+            view.adapter = SimplePostAdapter(viewPosts);
         }
 
         binding.postShort.addOnScrollListener(object: OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (scrollPercent(binding.postShort) >= 100) {
-                    Toast.makeText(activity, "새로운 게시물을 불러오는 중입니다", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(activity, "새로운 게시물을 불러오는 중입니다", Toast.LENGTH_SHORT).show()
 
                     val startIndex = viewPosts.size
                     val endIndex = (startIndex + 10).coerceAtMost(posts.size - 1)
@@ -152,7 +163,7 @@ class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment(
                 Log.d("test", "like button click")
             }
 
-            Log.d("test", "user = ${post.user}, post = ${post.post}")
+            //Log.d("test", "user = ${post.user}, post = ${post.post}")
         }
 
     }
