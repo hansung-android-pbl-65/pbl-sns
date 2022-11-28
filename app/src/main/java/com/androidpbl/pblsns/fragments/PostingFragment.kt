@@ -11,6 +11,7 @@ import com.androidpbl.pblsns.activities.EnrollmentActivity
 import com.androidpbl.pblsns.databinding.FragmentPostingBinding
 import com.androidpbl.pblsns.post.PostManager
 import com.androidpbl.pblsns.post.posts.Post
+import com.androidpbl.pblsns.users.UserCache
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -45,6 +46,18 @@ class PostingFragment : Fragment() {
         binding.resetButton.setOnClickListener {
             binding.posting.text = null
             Toast.makeText(context, "초기화 완료", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.userThumbPosting.setImageResource(R.drawable.ic_baseline_person_24)
+
+        val uid = Firebase.auth.uid
+        if (UserCache.cache.containsKey(uid)) {
+            binding.userNamePosting.text = UserCache.cache[uid]!!.nickname
+        } else {
+            Firebase.firestore.collection("UserInfo").whereEqualTo("uid", uid).get().addOnSuccessListener {
+                UserCache.cache[uid!!] = it.toObjects(EnrollmentActivity.UserInfo::class.java)[0]
+                binding.userNamePosting.text = UserCache.cache[uid]!!.nickname
+            }
         }
 
         return binding.root

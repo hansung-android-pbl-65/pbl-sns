@@ -1,33 +1,25 @@
 package com.androidpbl.pblsns.fragments
 
-import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ListView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.androidpbl.pblsns.R
+import com.androidpbl.pblsns.activities.EnrollmentActivity
 import com.androidpbl.pblsns.databinding.FragmentHomeBinding
-import com.androidpbl.pblsns.databinding.ItemRecyclerviewBinding
 import com.androidpbl.pblsns.databinding.PostShortLayoutBinding
-import com.androidpbl.pblsns.event.EventHandler
-import com.androidpbl.pblsns.event.EventManager
-import com.androidpbl.pblsns.event.Listener
 import com.androidpbl.pblsns.post.PostManager
-import com.androidpbl.pblsns.post.events.PostFindEvent
 import com.androidpbl.pblsns.post.posts.Post
-import com.google.common.collect.Lists
-import kotlin.coroutines.coroutineContext
+import com.androidpbl.pblsns.users.UserCache
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment() {
 
@@ -57,26 +49,17 @@ class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment(
                     for (i in 0..maxIndex) {
                         viewPosts.add(posts[i])
                     }
+
+                    createCacheAndAttachAdapter(view)
+                } else {
+                    attachAdapter(view)
                 }
 
-                // adapter attach
-                view.adapter = SimplePostAdapter(viewPosts);
             }.addOnFailureListener {
-
-                val tag = "포스트 테스트"
-                var msg = ""
-
-                // 테스트 포스트 추가
-                repeat(30) {
-                    msg = "$msg\n$tag $it"
-                    viewPosts.add(Post("test_user_$it", msg))
-                }
-
-                // adapter attach
-                view.adapter = SimplePostAdapter(viewPosts);
                 Toast.makeText(activity, "Firestore 연결 오류", Toast.LENGTH_SHORT).show()
             }
         } else {
+
 
             // 상위 10개 포스트 추가
             val maxIndex = 10.coerceAtMost(posts.size - 1)
@@ -84,7 +67,7 @@ class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment(
                 viewPosts.add(posts[i])
             }
 
-            view.adapter = SimplePostAdapter(viewPosts);
+            createCacheAndAttachAdapter(view)
         }
 
         binding.postShort.addOnScrollListener(object: OnScrollListener() {
@@ -111,6 +94,32 @@ class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment(
         return (view.computeVerticalScrollOffset() * 1.0 / (view.computeVerticalScrollRange() - view.computeVerticalScrollExtent())) * 100.0
     }
 
+    private fun createCacheAndAttachAdapter(view: RecyclerView) {
+        // 출력할 post 의 유저 정보 캐싱
+        val uids = mutableListOf<String>()
+        for (post in posts) {
+            post.user?.let { uids.add(it) }
+            Log.d("", "Find uid: ${post.user}")
+        }
+
+        val col = Firebase.firestore.collection("UserInfo")
+        col.get().addOnSuccessListener {
+            for (doc in it) {
+                val uid = doc["uid"].toString()
+                if (!UserCache.cache.containsKey(uid) && uids.contains(uid)) {
+                    UserCache.cache[uid] = doc.toObject(EnrollmentActivity.UserInfo::class.java)
+                }
+            }
+
+            // 유저 캐시가 끝난 후 어탭터 연결
+            attachAdapter(view)
+        }
+    }
+
+    private fun attachAdapter(view: RecyclerView) {
+        view.adapter = SimplePostAdapter(viewPosts);
+    }
+
     companion object {
 
         const val NAME = "홈"
@@ -133,13 +142,17 @@ class HomeFragment constructor(private var posts: MutableList<Post>) : Fragment(
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val binding = (holder as SimplePostViewHolder).binding
             val post = posts[position]
+            val info = UserCache.cache[post.user]
+
+            Log.d("", "user info: ${post.user}")
+
             val blackColor = Color.parseColor("#000000")
 
             //TODO: 유저 썸네일 바인딩
             binding.userThumb.setImageResource(R.drawable.ic_baseline_person_24)
 
             // 유저 이름, 포스트 바인딩
-            binding.userName.text = post.user;
+            binding.userName.text = info!!.nickname;
             binding.userName.setTextColor(blackColor)
 
             binding.postShortContent.text = post.post;
