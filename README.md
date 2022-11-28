@@ -59,7 +59,7 @@ build 파일 수정 시 다음과 같이 커밋 메시지를 작성할 수 있�
 
 </br>
 
-### 라이브러리
+### 라이브러리 사용 예시
 
 * Firebase 사용은 [Firebase 사용 가이드](https://firebase.google.com/docs/reference/android/packages?hl=ko)를 참고 바랍니다.
-* 텍스트 에디터는 [WYSIWYG 에디터](https://github.com/onecode369/WYSIWYG)를 참고 바랍니다.
+
