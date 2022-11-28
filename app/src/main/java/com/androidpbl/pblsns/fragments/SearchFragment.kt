@@ -103,9 +103,8 @@ class SearchFragment : Fragment() {
             if(nickname.lowercase().contains(text!!.lowercase()))
                 filteredList.add(nickname)
         }
-        if(filteredList.isEmpty()){
-            Toast.makeText(activity, "No Data Found", Toast.LENGTH_SHORT).show()
-        }else{
+
+        if (filteredList.isNotEmpty()) {
             adapter.setFilteredList(filteredList)
         }
     }// filterUserList
