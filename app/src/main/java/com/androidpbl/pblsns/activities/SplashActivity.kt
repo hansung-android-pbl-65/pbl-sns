@@ -1,13 +1,11 @@
-package com.androidpbl.pblsns
+package com.androidpbl.pblsns.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import com.androidpbl.pblsns.activities.ContentActivity
-import com.androidpbl.pblsns.activities.LoginActivity
-import com.androidpbl.pblsns.fragments.HomeFragment
+import com.androidpbl.pblsns.R
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
